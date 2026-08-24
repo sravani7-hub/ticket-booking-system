@@ -1,23 +1,36 @@
-Sure. For your GitHub **ticket-booking-system**, use this README. It describes your MERN ticket booking project, seat booking, waitlist, MongoDB, and deployment setup.
-
 # 🎟️ Ticket Booking System
 
-A full-stack ticket booking system built using the **MERN stack**. The application allows customers to browse events, select seats, book tickets, view bookings, and join a waitlist when seats are unavailable.
+A full-stack **Ticket Booking System** built using React, Node.js, Express.js, and MongoDB. The application allows users to register/login, browse events, view seat availability, book tickets, cancel bookings, and manage waitlist entries.
+
+## 🌐 Live Application
+
+**Live Website:** Ticket Booking System
+
+**Frontend:** Render Static Site
+
+**Backend API:** Render Web Service
+
+**Database:** MongoDB Atlas
+
+The application is deployed as a separate frontend and backend service for better scalability and maintainability.
 
 ## 🚀 Features
 
-* User authentication
-* Event listing
-* Interactive seat map
-* Seat availability tracking
-* Temporary seat holding
-* Ticket booking and confirmation
-* Booking price calculation
-* Booking history
-* Waitlist functionality
-* Real-time seat updates using Socket.IO
-* MongoDB database integration
-* REST API using Node.js and Express
+* 🔐 User Registration and Login
+* 🎭 Event Listing
+* 💺 Seat Availability Management
+* 🔒 Temporary Seat Holding
+* 🎟️ Ticket Booking and Confirmation
+* 💰 Automatic Booking Price Calculation
+* 📋 Booking History
+* ❌ Booking Cancellation
+* ⏳ Waitlist Management
+* 🔄 Automated Waitlist Offers
+* ⚡ Real-time seat and booking updates
+* 🗄️ MongoDB database integration
+* 🔑 JWT-based authentication
+* 🛡️ Protected API routes
+* 🌐 RESTful backend APIs
 
 ## 🛠️ Technology Stack
 
@@ -27,7 +40,10 @@ A full-stack ticket booking system built using the **MERN stack**. The applicati
 * Vite
 * JavaScript
 * Axios
+* React Router
 * Socket.IO Client
+* HTML5
+* CSS3
 
 ### Backend
 
@@ -37,12 +53,14 @@ A full-stack ticket booking system built using the **MERN stack**. The applicati
 * Mongoose
 * JWT Authentication
 * Socket.IO
+* REST API
 
 ### Deployment
 
-* Frontend: Vercel
-* Backend: Render
+* Frontend: Render Static Site
+* Backend: Render Web Service
 * Database: MongoDB Atlas
+* Source Control: GitHub
 
 ## 📁 Project Structure
 
@@ -54,88 +72,85 @@ ticket-booking-system/
 │   │   ├── App.jsx
 │   │   ├── api.js
 │   │   └── ...
-│   ├── public/
 │   ├── package.json
 │   ├── package-lock.json
 │   ├── index.html
-│   └── vite.config.js
+│   └── .env.example
 │
 ├── server/
+│   ├── config/
+│   ├── controllers/
+│   ├── jobs/
+│   ├── middleware/
 │   ├── models/
 │   ├── routes/
-│   ├── controllers/
-│   ├── middleware/
+│   ├── services/
 │   ├── server.js
 │   ├── package.json
-│   └── package-lock.json
+│   ├── package-lock.json
+│   └── .env.example
 │
 └── README.md
 ```
 
-## ⚙️ Local Setup
+## 💻 Frontend
 
-### 1. Clone the repository
+The frontend is developed using **React.js and Vite**.
 
-```bash
-git clone https://github.com/YOUR-USERNAME/ticket-booking-system.git
-cd ticket-booking-system
-```
+It provides the user interface for:
 
-### 2. Install backend dependencies
+* Login and authentication
+* Viewing available events
+* Selecting seats
+* Booking tickets
+* Viewing booking history
+* Cancelling bookings
+* Viewing waitlist information
 
-```bash
-cd server
-npm install
-```
+### Frontend Configuration
 
-### 3. Configure backend environment variables
-
-Create a `.env` file inside the `server` folder.
+Create a `.env` file inside the `client` directory:
 
 ```env
+VITE_API_URL=your_backend_api_url
+```
+
+For the deployed application, the frontend communicates with the deployed backend API.
+
+## ⚙️ Backend
+
+The backend is developed using **Node.js and Express.js**.
+
+It provides REST APIs for:
+
+* User authentication
+* Event management
+* Seat management
+* Ticket booking
+* Booking cancellation
+* Waitlist management
+* Database operations
+
+### Backend Configuration
+
+Create a `.env` file inside the `server` directory:
+
+```env
+PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-PORT=5000
+CLIENT_URL=your_frontend_url
+HOLD_TTL_MINUTES=your_value
+WAITLIST_OFFER_MINUTES=your_value
 ```
 
-Do not commit the `.env` file to GitHub.
-
-### 4. Start the backend
-
-```bash
-npm run dev
-```
-
-The backend runs on:
-
-```text
-http://localhost:5000
-```
-
-### 5. Install frontend dependencies
-
-Open another terminal:
-
-```bash
-cd client
-npm install
-```
-
-### 6. Start the frontend
-
-```bash
-npm run dev
-```
-
-The frontend will be available at:
-
-```text
-http://localhost:5173
-```
+**Never upload your actual `.env` file or database credentials to GitHub.**
 
 ## 🗄️ Database
 
-The application uses **MongoDB Atlas** to store:
+The application uses **MongoDB Atlas** as its cloud database.
+
+The database stores information such as:
 
 * Users
 * Events
@@ -143,93 +158,194 @@ The application uses **MongoDB Atlas** to store:
 * Bookings
 * Waitlist entries
 
-The MongoDB connection string should be stored securely in the backend `.env` file.
+MongoDB is connected to the backend through Mongoose.
 
 ## 🎫 Booking Flow
 
 ```text
-Customer
-   ↓
-Login / Register
-   ↓
+User
+  ↓
+Register / Login
+  ↓
+View Events
+  ↓
 Select Event
-   ↓
-View Seat Map
-   ↓
-Select Available Seat
-   ↓
-Hold Seat
-   ↓
+  ↓
+View Available Seats
+  ↓
+Select Seat
+  ↓
+Temporarily Hold Seat
+  ↓
 Confirm Booking
-   ↓
-Booking Created
-   ↓
-Ticket Confirmation
+  ↓
+Ticket Generated
+  ↓
+View Booking History
 ```
 
-If no suitable seat is available:
+## ⏳ Waitlist Flow
+
+When suitable seats are unavailable:
 
 ```text
-Customer
-   ↓
+User
+  ↓
 Select Event
-   ↓
-No Available Seat
-   ↓
+  ↓
+No Suitable Seat Available
+  ↓
 Join Waitlist
-   ↓
+  ↓
 Waitlist Entry Created
-   ↓
+  ↓
 Seat Becomes Available
-   ↓
-Customer Receives Offer
+  ↓
+Waitlist Offer Generated
+  ↓
+User Can Receive Offered Seat
 ```
 
-## 🔄 Real-Time Updates
+## 🔄 Real-Time Functionality
 
-Socket.IO is used to provide real-time updates for seat availability and booking-related changes.
+Socket.IO is used for real-time communication between the frontend and backend.
 
-This helps prevent multiple users from booking the same seat.
+This helps keep seat availability and booking-related information synchronized.
 
 ## 🔐 Security
 
-The application uses:
+The application includes:
 
-* JWT-based authentication
+* JWT authentication
 * Password hashing
 * Protected API routes
-* Environment variables for sensitive configuration
-* Server-side booking validation
+* Server-side validation
+* Environment variables for sensitive information
+* MongoDB authentication
+* CORS configuration
 
-Sensitive files such as `.env` and `node_modules` should not be uploaded to GitHub.
+Sensitive files such as `.env` and `node_modules` should not be committed to GitHub.
 
-## 🌐 Deployment
+## ▶️ Running the Project Locally
 
-The planned production architecture is:
+### 1. Clone the repository
 
-```text
-React / Vite
-     ↓
-   Vercel
-     ↓
-Node.js / Express
-     ↓
-   Render
-     ↓
-MongoDB Atlas
+```bash
+git clone https://github.com/sravani7-hub/ticket-booking-system.git
+cd ticket-booking-system
 ```
 
-## 📌 Future Improvements
+### 2. Start the Backend
 
-* Online payment integration
-* Email ticket confirmation
-* QR-code based tickets
-* Admin dashboard
-* Advanced event management
-* Booking cancellation and refunds
-* Improved seat-lock expiration handling
-* Production monitoring and logging
+```bash
+cd server
+npm install
+npm start
+```
+
+Backend:
+
+```text
+http://localhost:5000
+```
+
+### 3. Start the Frontend
+
+Open another terminal:
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+Frontend:
+
+```text
+http://localhost:5173
+```
+
+## ☁️ Deployment Architecture
+
+```text
+                 ┌──────────────────────┐
+                 │       User           │
+                 │      Browser         │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 ┌──────────────────────┐
+                 │   React + Vite       │
+                 │   Frontend           │
+                 │   Render             │
+                 └──────────┬───────────┘
+                            │
+                            │ REST API
+                            ▼
+                 ┌──────────────────────┐
+                 │ Node.js + Express    │
+                 │ Backend              │
+                 │ Render               │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 ┌──────────────────────┐
+                 │    MongoDB Atlas     │
+                 │      Database        │
+                 └──────────────────────┘
+```
+
+## 📌 Deployment
+
+### Frontend
+
+The React frontend is deployed as a **Render Static Site**.
+
+### Backend
+
+The Node.js/Express backend is deployed as a **Render Web Service**.
+
+### Database
+
+MongoDB Atlas is used as the production database.
+
+## 🔮 Future Improvements
+
+* 💳 Online payment gateway integration
+* 📧 Email ticket confirmation
+* 📱 QR-code based tickets
+* 👨‍💼 Admin dashboard
+* 🎭 Advanced event management
+* 💰 Refund processing
+* 📊 Admin analytics and reports
+* 🔔 Email/SMS booking notifications
+* 📈 Improved monitoring and logging
+* 🎨 Enhanced responsive UI
 
 ## 👩‍💻 Author
 
-Developed as a full-stack ticket booking system using the MERN stack.
+Developed as a full-stack web application demonstrating modern frontend, backend, database, authentication, booking, cancellation, and waitlist management concepts.
+
+## ⭐ Project Highlights
+
+This project demonstrates practical experience with:
+
+* Full-stack development
+* REST API development
+* React.js
+* Node.js and Express.js
+* MongoDB and Mongoose
+* JWT authentication
+* Seat allocation and booking logic
+* Waitlist management
+* Real-time communication
+* Cloud deployment
+* Environment configuration
+
+#### 🔗 Project Links
+
+- 🌐 **Live Website:** [Ticket Booking Website](https://ticket-booking-system-client-11ay.onrender.com)
+- ⚙️ **Backend API:** [Ticket Booking Backend API](https://ticket-booking-system-1-cmcx.onrender.com)
+- 💻 **GitHub Repository:** [Ticket Booking System](https://github.com/sravani7-hub/ticket-booking-system)
+- 🎨 **Frontend Code:** [Client](https://github.com/sravani7-hub/ticket-booking-system/tree/main/client)
+- 🖥️ **Backend Code:** [Server](https://github.com/sravani7-hub/ticket-booking-system/tree/main/server)
