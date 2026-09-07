@@ -1,0 +1,48 @@
+# Place this file at the repo root: ticket-booking-system/docker-compose.yml
+# Brings up MongoDB, the Express backend, and the React frontend together.
+
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: tbs-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: tbs-server
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      MONGO_URI: mongodb://mongo:27017/ticket-booking-system
+      JWT_SECRET: ${JWT_SECRET:-dev_secret_change_me}
+      CLIENT_URL: http://localhost:5173
+      HOLD_TTL_MINUTES: ${HOLD_TTL_MINUTES:-5}
+      WAITLIST_OFFER_MINUTES: ${WAITLIST_OFFER_MINUTES:-10}
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:5000
+    container_name: tbs-client
+    restart: unless-stopped
+    depends_on:
+      - server
+    ports:
+      - "5173:80"
+
+volumes:
+  mongo-data:
