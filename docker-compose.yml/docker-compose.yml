@@ -36,7 +36,7 @@ services:
       context: ./client
       dockerfile: Dockerfile
       args:
-        VITE_API_URL: http://localhost:5000
+        VITE_API_URL: http://localhost:5000/api
     container_name: tbs-client
     restart: unless-stopped
     depends_on:
